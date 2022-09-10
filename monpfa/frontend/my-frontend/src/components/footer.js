@@ -1,13 +1,38 @@
 import React from "react";
-const Footer  = props => {
-    return(
-        <div>
-           Contact : 08 19 17 278 1 | Contact@application.com &copy; 2021, notre application de traitement d'image est l'une 
-           de meilleurs application au monde 
-        </div>
+import {
+  Box,
+  Container,
+  Row,
+  Column,
+  FooterLink,
   
-    );
-  };
+} from "./FooterStyles";
   
-  export default Footer;
-  
+const Footer = () => {
+  return (
+    <Box>
+      
+      <Container>
+        <Row>
+          <Column>
+            <h3>Les options</h3>
+            <FooterLink href="#">Enhance,Filtrer,Améliorer</FooterLink>
+          </Column>
+          <Column>
+            <h3>Services</h3>
+            <FooterLink href="#">Design,éditer des photos</FooterLink> 
+          </Column>
+          <Column>
+            <h3>Email</h3>
+            <FooterLink href="#">Contact@contact.com</FooterLink>
+          </Column>
+          <Column>
+            <h3>Fax</h3>
+            <FooterLink href="#">01 23 57 88 66</FooterLink>
+          </Column>
+        </Row>
+      </Container>
+    </Box>
+  );
+};
+export default Footer;

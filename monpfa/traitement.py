@@ -9,7 +9,7 @@ def load_image(image_path):
         image = Image.open(image_path)
         return image
     except Exception as e:
-        print('image est pas encore téléchargé')
+        print( " l'image est pas encore téléchargé ")
 def dupe_image(image_path, options):
     if options == 'copy':
         copyfile(image_path, image_path + '.copy')
@@ -152,7 +152,7 @@ def appliquer_filtre(image_path,options):
         # SMOOTH_MORE
 
         # Applying the smooth more filter
-        image = imaage.filter(SMOOTH_MORE)
+        image = image.filter(SMOOTH_MORE)
         image.save(image_path)
         image.show()
     elif options == "9" :
@@ -164,68 +164,68 @@ def appliquer_filtre(image_path,options):
         image.show()
         image.save(image_path)
 # flouter une image
-def flouter_image(image_path , options() ):
+def flouter_image(image_path , options ):
     # Opens a image in RGB mode
     image = Image.open(image_path)
     image = load_image(image_path)
  # Blurring the image
-if options=="0":
-    image.filter(ImageFilter.GaussianBlur(4))
-elif options =="1" :
-    image.filter(ImageFilter.BLUR)
-elif options == "2" :
-    image.filter(ImageFilter.BoxBlur(1))
+    if options=="0":
+        image.filter(ImageFilter.GaussianBlur(4))
+    elif options =="1" :
+        image.filter(ImageFilter.BLUR)
+    elif options == "2" :
+        image.filter(ImageFilter.BoxBlur(1))
 
 # Shows the image in image viewer
-image.show()
-#enregistrer l'image
-image.save(image_path)
+    Image._show(image)
+    #enregistrer l'image
+    Image.save(image_path)
 
   #rotation/pivoter
 def retourner_image (image_path , options):
     image = Image.open(image_path)
     image = load_image(image_path)
-if options =="0" :
-    # flip anti-clockwise
-    flip_image = image.transpose(Image.TRANSPOSE)
-    flip_image.show()
-    image = Image.save(image_path)
-elif options =="1" :
-    # transverse
-    # flip clockwise
-    flip_image = image.transpose(Image.TRANSVERSE)
-    flip_image.show()
-elif options =="2" :
-    # flip
+    if options =="0" :
+        # flip anti-clockwise
+        flip_image = image.transpose(Image.TRANSPOSE)
+        flip_image.show()
+        image = Image.save(image_path)
+    elif options =="1" :
+        # transverse
+        # flip clockwise
+        flip_image = image.transpose(Image.TRANSVERSE)
+        flip_image.show()
+    elif options =="2" :
+        # flip
 
-    # flip horizontal
-    flip_image = image.transpose(Image.FLIP_LEFT_RIGHT)
+        # flip horizontal
+        flip_image = image.transpose(Image.FLIP_LEFT_RIGHT)
 
-    flip_image.show()
+        flip_image.show()
     # flip_top_bottom
-elif options =="3" :
-    # flip vertical
-    flip_image = image.transpose(Image.FLIP_TOP_BOTTOM)
+    elif options =="3" :
+        # flip vertical
+        flip_image = image.transpose(Image.FLIP_TOP_BOTTOM)
 
-    flip_image.show()
-image.save(image_path)
+        flip_image.show()
+    image.save(image_path)
 def rotation_image (image_path , options ) :
     image = Image.open(image_path)
     image =load_image(image_path)
-if options =="0" :
-    # rotate by 90 degrees
-    rot_image = image.transpose(Image.ROTATE_90)
-    rot_image.show()
-elif options == "1" :
-    # rotate by 180 degrees
-    rot_image = image.transpose(Image.ROTATE_180)
-    rot_image.show()
-elif options =="2" :
-    # rotate by 270 degrees
-    rot_image = image.transpose(Image.ROTATE_270)
+    if options =="0" :
+        # rotate by 90 degrees
+        rot_image = image.transpose(Image.ROTATE_90)
+        rot_image.show()
+    elif options == "1" :
+        # rotate by 180 degrees
+        rot_image = image.transpose(Image.ROTATE_180)
+        rot_image.show()
+    elif options =="2" :
+        # rotate by 270 degrees
+        rot_image = image.transpose(Image.ROTATE_270)
 
-    rot_image.show()
-image.save(image_path)
+        rot_image.show()
+    image.save(image_path)
 def redimensionner_image(image_path ,left , top , right , bottom) :
     image = Image.open(image_path)
     load_image= (image_path)
