@@ -9,6 +9,8 @@ import Footer from "./components/footer";
 import 'bootstrap/dist/css/bootstrap.min.css';
 import 'bootstrap/dist/js/bootstrap.min.js';
 import './css/app.css';
+import { Link } from 'react-router-dom';
+import deuxiémeinterface from './deuxiémeinterface';
 
 class App extends Component {
   constructor(props) {
@@ -28,12 +30,12 @@ class App extends Component {
      const types = ['image/png', 'image/jpeg', 'image/gif' , 'image/jpg ' , 'image/txt' , 'image/png' , ]
       // loop access array
       for(var x = 0; x<files.length; x++) {
-       // compare file type find doesn't matach
-           if (types.every(type => files[x].type !== type)) {
-           // create error message and assign to container   
-           err[x] = files[x].type+' is not a supported format\n';
-         }
-       };
+        // compare file type find doesn't matach
+            if (types.every(type => files[x].type !== type)) {
+            // create error message and assign to container   
+            err[x] = files[x].type+' is not a supported format\n';
+          }
+        };
        for(var z = 0; z<err.length; z++) {// if message not same old that mean has error 
            // discard selected file
           toast.error(err[z])
@@ -116,8 +118,8 @@ class App extends Component {
               <Progress max="100" color="success" value={this.state.loaded} >{Math.round(this.state.loaded,2) }%</Progress>
         
               </div> 
-             
-             <a href='src/deuxiémeinterface.js' >
+            
+             <a href={deuxiémeinterface} >
               <button type="button" class="btn btn-success btn-block" onClick={this.onClickHandler}>Télécharger</button>
               </a>
               
