@@ -11,6 +11,7 @@ import 'bootstrap/dist/js/bootstrap.min.js';
 import './css/app.css';
 import { Link } from 'react-router-dom';
 import deuxiémeinterface from './deuxiémeinterface';
+import render from 'react-dom';
 
 class App extends Component {
   constructor(props) {
@@ -21,6 +22,7 @@ class App extends Component {
       }
    
     }
+    
     checkMimeType=(event)=>{
       //getting file object
       let files = event.target.files 
@@ -53,25 +55,26 @@ class App extends Component {
         }
       return true;
    }
-   checkFileSize=(event)=>{
-    let files = event.target.files
-    let size = 2000000 
-    let err = []; 
-    for(var x = 0; x<files.length; x++) {
-    if (files[x].size > size) {
-     err[x] = files[x].type+'is too large, please pick a smaller file\n';
-   }
-  };
-  for(var z = 0; z<err.length; z++) {// if message not same old that mean has error 
-    // discard selected file
-   toast.error(err[z])
-   event.target.value = null
-  }
-  return true;
-  }
+  //  checkFileSize=(event)=>{
+  //   let files = event.target.files
+  //   let size = 40000
+  //   let err = []; 
+  // //   for(var x = 0; x<files.length; x++) {
+  // //     console.log(files[x].size)
+  // //   if (files[x].size > size) {
+  // //    err[x] = files[x].type+'is too large, please pick a smaller file\n';
+  // //  }
+  // };
+  // for(z = 0; z<err.length; z++) {// if message not same old that mean has error 
+  //   // discard selected file
+  //  toast.error(err[z])
+  //  event.target.value = null
+  // }
+  // return true;
+  // }
   onChangeHandler=event=>{
     var files = event.target.files
-    if(this.maxSelectFile(event) && this.checkMimeType(event) &&    this.checkFileSize(event)){ 
+    if(this.maxSelectFile(event) && this.checkMimeType(event)){ 
     // if return true allow to setState
        this.setState({
        selectedFile: files,
@@ -84,24 +87,25 @@ class App extends Component {
       for(var x = 0; x<this.state.selectedFile.length; x++) {
         data.append('file', this.state.selectedFile[x])
       }
-      axios.post("http://localhost:8000/upload", data, {
-        onUploadProgress: ProgressEvent => {
-          this.setState({
-            loaded: (ProgressEvent.loaded / ProgressEvent.total*100),
-          })
-        },
+      axios({
+        method:'post',
+        url:'http://localhost:8000/upload',
+        withCredentials:true,
+        data
       })
+   
         .then(res => { // then print response status
           toast.success('upload success')
         })
         .catch(err => { // then print response status
-          toast.error('upload fail')
+          console.log(err)
         })
       }
     
 
   render() {
     
+
     return (
       <div class="container">
         < Header />

@@ -3,7 +3,7 @@ import ReactDOM from 'react-dom';
 import "./css/index.css"; 
 import App from './app.js';
 import { BrowserRouter,   } from 'react-router-dom';
-
+import render from 'react-dom'
 
 { 
 
