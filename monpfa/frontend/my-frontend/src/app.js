@@ -9,8 +9,8 @@ import Footer from "./components/footer";
 import 'bootstrap/dist/css/bootstrap.min.css';
 import 'bootstrap/dist/js/bootstrap.min.js';
 import './css/app.css';
-import { Link } from 'react-router-dom';
-import deuxiémeinterface from './deuxiémeinterface';
+import { BrowserRouter as Router,Routes, Route, Link } from 'react-router-dom';
+import VerticalExample from './VerticalExample';
 import render from 'react-dom';
 
 class App extends Component {
@@ -22,6 +22,7 @@ class App extends Component {
       }
    
     }
+    
     
     checkMimeType=(event)=>{
       //getting file object
@@ -89,7 +90,7 @@ class App extends Component {
       }
       axios({
         method:'post',
-        url:'http://localhost:8000/upload',
+        url:'http://localhost:5000/upload',
         withCredentials:true,
         data
       })
@@ -107,7 +108,10 @@ class App extends Component {
     
 
     return (
+      
       <div class="container">
+      
+       
         < Header />
 	      <div class="row">
       	  <div class="offset-md-4 col-md-6 offset-sm-5 ">
@@ -122,16 +126,21 @@ class App extends Component {
               <Progress max="100" color="success" value={this.state.loaded} >{Math.round(this.state.loaded,2) }%</Progress>
         
               </div> 
-            
-             <a href={deuxiémeinterface} >
+             
+       
+      
+          <Link to="/ve">
               <button type="button" class="btn btn-success btn-block" onClick={this.onClickHandler}>Télécharger</button>
-              </a>
+              
+              </Link>
               
 	      </div>
       </div>
       
       < Footer />
+      
       </div>
+     
       
   
     );
