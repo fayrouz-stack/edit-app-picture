@@ -13,7 +13,7 @@ from shutil import copyfile
 import colorsys
 import glob
 
-UPLOAD_FOLDER = 'C:/'
+UPLOAD_FOLDER = 'static/uploads'
 ALLOWED_EXTENSIONS = set(['txt', 'pdf', 'png', 'jpg', 'jpeg', 'gif'])
 INPUT_FILENAME = ''
 
