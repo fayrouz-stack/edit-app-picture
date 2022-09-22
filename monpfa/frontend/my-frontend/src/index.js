@@ -1,31 +1,18 @@
 import React  from 'react';
-import ReactDOM from 'react-dom';
+import { createRoot } from 'react-dom/client'
 import "./css/index.css"; 
 import App from './app.js';
 import { BrowserRouter,  Routes, Route } from 'react-router-dom';
-import render from 'react-dom'
 import VerticalExample from './VerticalExample.js';
-import TextLinkExample from '../src/components/header.js'
+import app from './app'
 
 { 
-
-ReactDOM.render( <BrowserRouter>
-     
+     createRoot(document.getElementById('root')).render( <BrowserRouter>
      <Routes>
-       
-          <Route exact path='/ve' component={TextLinkExample} />
-        
-          <Route exact path='/' component={VerticalExample} />
-        
-       
+          <Route  path='/app' element={app} />
+          <Route  path='/VerticalExample' element={VerticalExample} />
         </Routes>
         <App />
-        
-      
-
-         
          </BrowserRouter>
-, document.getElementById('root'));
-
-
+, );
 }

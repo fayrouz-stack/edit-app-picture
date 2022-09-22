@@ -1,33 +1,38 @@
+from fileinput import filename
 import os
-import sys 
-import urllib.request
-from flask import Flask, render_template, request, redirect, jsonify , redirect, url_for, send_file
+from urllib import request, response 
+from flask import Flask,  render_template, request, redirect, jsonify , redirect, url_for, send_file
 from werkzeug.utils import secure_filename
 from PIL import Image , ImageFilter
 from PIL import ImageEnhance
 from PIL.ImageFilter import (
    BLUR, CONTOUR, DETAIL, EDGE_ENHANCE, EDGE_ENHANCE_MORE,
    EMBOSS, FIND_EDGES, SMOOTH, SMOOTH_MORE, SHARPEN)
-from flask_cors import CORS 
 from shutil import copyfile
 import colorsys
 import glob
+from flask_cors import CORS
+from logging import FileHandler,WARNING
 
-UPLOAD_FOLDER = 'static/uploads'
+
+
+
+UPLOAD_FOLDER = ''
 ALLOWED_EXTENSIONS = set(['txt', 'pdf', 'png', 'jpg', 'jpeg', 'gif'])
 INPUT_FILENAME = ''
 
 app = Flask(__name__) 
+file_handler = FileHandler('errorlog.txt')
+file_handler.setLevel(WARNING)
 CORS(app)
-cors = CORS(app ,ressources ={
-    r"/*" : {
-        "origins":"*"
-    }
-})
+
 app.secret_key = "secret key"
 app.config['UPLOAD_FOLDER'] = UPLOAD_FOLDER
 app.config['MAX_CONTENT_LENGTH'] = 16 * 1024 * 1024
 
+#class data 
+
+#......................    
 def allowed_file(filename):
     return '.' in filename and filename.rsplit('.', 1)[1].lower() in ALLOWED_EXTENSIONS
 image, slider = None, None
@@ -42,7 +47,10 @@ def add_header(response):
     response.headers['Pragma'] = 'no-cache'
     response.headers['Expires'] = '-1'
     return response
-@app.route('/upload', methods=['GET' , 'POST'])
+@app.route('/upload', methods=[ 'POST'])
+#database
+
+    #......
 def upload_file():
     # check if the post request has the file part
         if 'file' not in request.files:
@@ -63,12 +71,11 @@ def upload_file():
         else:
             resp = jsonify({'message' : 'Allowed file types are txt, pdf, png, jpg, jpeg, gif'})
             resp.status_code = 400
-            return resp
-        if request.method == 'POST':
-            for f in request.files.getlist('file_name'):
-                f = request.files['file_name']
-                f.save(os.path.join(app.config['UPLOAD_PATH'], f.filename))
-@app.route('/uploaded', methods=['GET', 'POST'])
+            return resp       
+@app.route('/uploaded', methods=[  'GET'])
+#database
+
+#...
 def uploaded():
     global image, slider
 def load_image(image_path):
@@ -136,6 +143,7 @@ def améliération_qualité(image, image_path):
     # shows updated image in image viewer
     image_sharped.show()
     image.save(image_path)
+    return jsonify(ImageEnhance)
 
 # HUE [ inspired by: https://stackoverflow.com/questions/24874765 ]
 def get_dominant_colors(image_path, colors_count=5):
@@ -157,7 +165,9 @@ def apply_hue_shift(image_path, hue_angle):
             r, g, b = colorsys.hsv_to_rgb(h, s, v)
             ld[i, j] = (int(r * 255.9999), int(g * 255.9999), int(b * 255.9999))
     image.save(image_path)
+    return jsonify (image)
 #filter
+
 def appliquer_filtre(image_path,options):
     
     # Create image object
@@ -230,6 +240,7 @@ def appliquer_filtre(image_path,options):
         image.save(image_path)
         image.show()
         image.save(image_path)
+        return jsonify(image.filter)
 # flouter une image
 def flouter_image(image_path , options ):
     # Opens a image in RGB mode
@@ -243,11 +254,12 @@ def flouter_image(image_path , options ):
     elif options == "2" :
         image.filter(ImageFilter.BoxBlur(1))
 
+    
 # Shows the image in image viewer
     Image._show(image)
     #enregistrer l'image
     Image.save(image_path)
-
+    return jsonify(image)
   #rotation/pivoter
 def retourner_image (image_path , options):
     image = Image.open(image_path)
@@ -276,6 +288,7 @@ def retourner_image (image_path , options):
 
         flip_image.show()
     image.save(image_path)
+    return jsonify(image)
 def rotation_image (image_path , options ) :
     image = Image.open(image_path)
     image =load_image(image_path)
@@ -293,6 +306,7 @@ def rotation_image (image_path , options ) :
 
         rot_image.show()
     image.save(image_path)
+    return jsonify (image)
 def redimensionner_image(image_path ,left , top , right , bottom) :
     image = Image.open(image_path)
     load_image= (image_path)
@@ -308,11 +322,12 @@ def redimensionner_image(image_path ,left , top , right , bottom) :
     image = image.resize(newsize)
     image.show()
     image.save(image_path)
+    return jsonify(image)
 
 
 
-    if INPUT_FILENAME:
-        if request.method == 'POST':
+if INPUT_FILENAME:
+    if request.method == 'POST':
             # Nav
             original_button = request.form.get('original_button')
             download_button = request.form.get('download_button')
@@ -343,54 +358,54 @@ def redimensionner_image(image_path ,left , top , right , bottom) :
             #redimensionner
             resize_button = request.form.get('resize_button')
     
-    if enhance_button:
+if enhance_button:
         slider = {key: float(request.form.get(key)) for key, value in slider.items()}
         améliération_qualité(image, os.path.join(UPLOAD_FOLDER, INPUT_FILENAME), slider)
-    if hue_button:
+if hue_button:
         hue_angle = float(request.form.get('hue_angle'))
         apply_hue_shift(os.path.join(UPLOAD_FOLDER, INPUT_FILENAME), hue_angle)
-    if blur_button:
+if blur_button:
         appliquer_filtre(os.path.join(UPLOAD_FOLDER, INPUT_FILENAME), blur_button)
-    elif contour_button:
+elif contour_button:
         appliquer_filtre(os.path.join(UPLOAD_FOLDER, INPUT_FILENAME), contour_button)
-    elif detail_button:
+elif detail_button:
         appliquer_filtre(os.path.join(UPLOAD_FOLDER, INPUT_FILENAME), detail_button)
-    elif edge_enhance_button:
+elif edge_enhance_button:
         appliquer_filtre(os.path.join(UPLOAD_FOLDER, INPUT_FILENAME), edge_enhance_button)
-    elif edge_enhance_more_button:
+elif edge_enhance_more_button:
         appliquer_filtre(os.path.join(UPLOAD_FOLDER, INPUT_FILENAME), edge_enhance_more_button)
-    elif emboss_button:
+elif emboss_button:
         appliquer_filtre(os.path.join(UPLOAD_FOLDER, INPUT_FILENAME), emboss_button)
-    elif find_edge_button:
+elif find_edge_button:
        appliquer_filtre(os.path.join(UPLOAD_FOLDER, INPUT_FILENAME), find_edge_button)
-    elif sharpen_button:
+elif sharpen_button:
         appliquer_filtre(os.path.join(UPLOAD_FOLDER, INPUT_FILENAME), sharpen_button)
-    elif smooth_button:
+elif smooth_button:
         appliquer_filtre(os.path.join(UPLOAD_FOLDER, INPUT_FILENAME), smooth_button)
-    elif smooth_more_button:
+elif smooth_more_button:
         appliquer_filtre(os.path.join(UPLOAD_FOLDER, INPUT_FILENAME), smooth_more_button)
-    elif sharpen_button:
+elif sharpen_button:
         appliquer_filtre(os.path.join(UPLOAD_FOLDER, INPUT_FILENAME), sharpen_button)
 
-    if TRANSPOSE_button:
+if TRANSPOSE_button:
         retourner_image(os.path.join(UPLOAD_FOLDER, INPUT_FILENAME), TRANSPOSE_button)
-    elif TRANSVERSE_button:
+elif TRANSVERSE_button:
         retourner_image(os.path.join(UPLOAD_FOLDER, INPUT_FILENAME), TRANSVERSE_button)
-    elif FLIP_LEFT_RIGHT_button:
+elif FLIP_LEFT_RIGHT_button:
         retourner_image(os.path.join(UPLOAD_FOLDER, INPUT_FILENAME), FLIP_LEFT_RIGHT_button)
-    elif FLIP_TOP_BOTTOM_button:
+elif FLIP_TOP_BOTTOM_button:
         retourner_image(os.path.join(UPLOAD_FOLDER, INPUT_FILENAME), FLIP_TOP_BOTTOM_button)
-    if ROTATE_90_button:
+if ROTATE_90_button:
         angle = int(request.form.get('angle'))
         rotation_image(os.path.join(UPLOAD_FOLDER, INPUT_FILENAME), angle)
-    elif ROTATE_180_button:
+elif ROTATE_180_button:
         angle = int(request.form.get('angle'))
         rotation_image(os.path.join(UPLOAD_FOLDER, INPUT_FILENAME), angle)
-    elif ROTATE_270_button:
+elif ROTATE_270_button:
         n_width = int(request.form.get('width'))
         n_height = int(request.form.get('height'))
         rotation_image(os.path.join(UPLOAD_FOLDER, INPUT_FILENAME), n_width, n_height)
-    if resize_button:
+if resize_button:
         left = int(request.form.get('left'))
         top = int(request.form.get('top'))
         right = int(request.form.get('right'))
