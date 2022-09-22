@@ -16,7 +16,8 @@ function VerticalExample()
     headers: { crossDomain: true },
   })
   return (
-   
+   <div className='container'> 
+  
     <ButtonGroup vertical>
       <Button>Hue</Button>
       <Button>Enhance</Button>
@@ -69,7 +70,8 @@ function VerticalExample()
       </DropdownButton>
       <Button>redimensionner</Button>
     </ButtonGroup>
-    
+    <img src="" alt="selected image" /> 
+    </div>
   );
 }
 

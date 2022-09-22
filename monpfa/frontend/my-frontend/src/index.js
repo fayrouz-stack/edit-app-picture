@@ -9,8 +9,8 @@ import app from './app'
 { 
      createRoot(document.getElementById('root')).render( <BrowserRouter>
      <Routes>
-          <Route  path='/app' element={app} />
-          <Route  path='/VerticalExample' element={VerticalExample} />
+          <Route  exact path='/' element={<App />} />
+          <Route  path='/verticalExample' element={<VerticalExample />} />
         </Routes>
         <App />
          </BrowserRouter>

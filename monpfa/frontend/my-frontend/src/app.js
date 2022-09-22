@@ -92,7 +92,7 @@ class App extends Component {
   
       
       console.log("data", data);
-    
+   
     axios({
       method: "post",
       url: "http://localhost:5000/upload",
@@ -102,18 +102,21 @@ class App extends Component {
       .then((res) => {
         // then print response status
         toast.success("upload success");
+       
       })
       .catch((err) => {
         // then print response status
         console.log(err);
       });
+      window.location.href="http://localhost:3000/verticalExample"
   };
+  
 
   render() {
     return (
       <div class="container" onSubmit={this.onClickHandler}>
         <Header />
-        <form id="form" method="post" action="VerticalExample.js" encType="multipart/form-data" >
+        <form id="form" method="post"  encType="multipart/form-data" >
           <div class="row">
             <div class="offset-md-4 col-md-6 offset-sm-5 ">
               <div class="form-group files">
